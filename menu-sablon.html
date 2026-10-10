@@ -1,200 +1,189 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Heti menü sablon — Nemzeti Étterem és Sütöde</title>
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex, nofollow">
+<title>Nemzeti Étterem – Heti menü sablon</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%239E2B1E'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' fill='%23FBF7F0' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- a logójel „N" betűje 600-as súllyal: text=N miatt csak ez az egy glif töltődik le (~1 KB) -->
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600&text=N&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<!--
+  Heti menü sablon — a megbízó által adott minta (2026-10-10, „Október 5 – 9.”) szerkezete:
+  trikolór csík, zöld dátumblokk, Levesek / Főételek oszlop, ár- és rendelési sáv.
+  Minden szöveg a lapon kattintással írható; a lap menütípusonként külön menti a böngészőben.
+  Nyomtatás: A4, margó nélkül, „háttérgrafika” bekapcsolva.
+-->
 <style>
-/* ============================================================
-   Heti menü — nyomtatható A4 sablon
-   Ugyanaz a design rendszer, mint a weboldalé (styles.css).
-   A TARTALMAT az étterem tölti ki: a heti menük nem szerepelnek
-   az ADATOK.md-ben, ezért itt nincs és nem is lehet valós ételsor.
-   ============================================================ */
-:root {
-  --paper:#FBF7F0; --paper-2:#F4EDE0; --surface:#FFFFFF;
-  --ink:#1C1815; --ink-2:#4C443C; --ink-3:#6E6459;
-  --line:#DBCEB6; --line-strong:#928675;
-  --accent:#9E2B1E; --brass:#B0873F;
-  --f-display:"Source Serif 4", Georgia, "Times New Roman", serif;
-  --f-sans:"Inter", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-}
-*,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0; background:var(--paper-2); color:var(--ink);
-  font-family:var(--f-sans); line-height:1.5;
-  -webkit-font-smoothing:antialiased; overflow-wrap:break-word;
-}
-:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  @page { size: A4; margin: 0; }
+  :root {
+    --red: #b3262e;
+    --green: #2f6b3a;
+    --ink: #2a2a2a;
+    --muted: #6b6b6b;
+    --line: #e4dfd6;
+    --paper: #fffdf8;
+    --tint: #f6f2ea;
+    --ph: #b9b2a6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ddd; }
+  body {
+    font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    font-synthesis: none;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
 
-/* ---------- vezérlősáv (csak képernyőn) ---------- */
-.toolbar{
-  position:sticky; top:0; z-index:10;
-  display:flex; flex-wrap:wrap; align-items:flex-end; gap:.75rem 1.25rem;
-  padding:1rem clamp(1rem,4vw,2rem);
-  background:rgba(251,247,240,.95); backdrop-filter:saturate(150%) blur(12px);
-  border-bottom:1px solid var(--line);
-}
-.tb-field{display:flex; flex-direction:column; gap:.25rem}
-.tb-field label{
-  font-size:.7rem; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--ink-3); font-weight:600; margin-right:-.14em;
-}
-.tb-field select,.tb-field input{
-  font:inherit; font-size:.875rem; color:var(--ink);
-  min-height:38px; padding:.25rem .6rem;
-  background:var(--surface); border:1px solid var(--line-strong); border-radius:3px;
-}
-.tb-actions{display:flex; flex-wrap:wrap; gap:.5rem; margin-left:auto}
-.tb-btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-  min-height:38px; padding:.35rem 1.1rem; cursor:pointer;
-  font:inherit; font-size:.875rem; font-weight:600; letter-spacing:.02em;
-  border:1px solid var(--line-strong); border-radius:3px;
-  background:var(--surface); color:var(--ink);
-  transition:background .2s, border-color .2s, color .2s;
-}
-.tb-btn:hover{border-color:var(--ink)}
-.tb-btn-primary{background:var(--accent); border-color:var(--accent); color:#fff}
-.tb-btn-primary:hover{background:#7E2117; border-color:#7E2117}
-.tb-note{
-  flex:1 1 100%; margin:0; font-size:.8rem; color:var(--ink-3); max-width:78ch;
-}
-.tb-note b{color:var(--accent); font-weight:600}
+  /* ---------- eszköztár (csak képernyőn) ---------- */
+  .toolbar {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 14px;
+    padding: 12px 16px; background: #fffdf8; border-bottom: 1px solid var(--line);
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  }
+  .tb-field { display: flex; flex-direction: column; gap: 4px; }
+  .tb-field label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .tb-field select, .tb-field input {
+    font: 600 14px/1.2 inherit; font-family: inherit; color: var(--ink);
+    padding: 7px 9px; min-height: 36px; border: 1px solid #a89f90; border-radius: 6px; background: #fff;
+  }
+  .tb-check { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; min-height: 36px; }
+  .tb-check input { width: 18px; height: 18px; accent-color: var(--green); }
+  .tb-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+  .tb-btn {
+    font: 600 14px/1 inherit; font-family: inherit; min-height: 36px; padding: 0 14px;
+    border: 1px solid #a89f90; border-radius: 6px; background: #fff; color: var(--ink); cursor: pointer;
+  }
+  .tb-btn:hover { border-color: var(--ink); }
+  .tb-btn.primary { background: var(--red); border-color: var(--red); color: #fff; }
+  .tb-btn.primary:hover { background: #8f1e25; }
+  .tb-note { flex-basis: 100%; font-size: 13px; color: var(--muted); line-height: 1.4; }
+  :focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 
-/* ---------- A4 lap ---------- */
-.sheet-wrap{display:flex; justify-content:center; padding:clamp(1rem,4vw,2.5rem)}
-.sheet{
-  position:relative;
-  width:210mm; min-height:297mm;
-  padding:16mm 18mm 12mm;
-  background:var(--surface);
-  box-shadow:0 2px 6px rgba(32,26,22,.06), 0 18px 40px rgba(32,26,22,.10);
-  display:flex; flex-direction:column;
-}
+  /* ---------- A4 lap ---------- */
+  .page {
+    width: 210mm; height: 297mm;
+    margin: 0 auto;
+    background: var(--paper);
+    position: relative;
+    padding: 8mm 7mm 7mm;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  /* trikolór csík felül és alul */
+  .page::before, .page::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 2.2mm;
+    background: linear-gradient(to right, var(--red) 0 33.33%, #fff 33.33% 66.66%, var(--green) 66.66%);
+  }
+  .page::before { top: 0; }
+  .page::after { bottom: 0; }
 
-/* fejléc */
-.sheet-head{display:flex; align-items:flex-start; gap:8mm}
-.brand{display:flex; align-items:center; gap:3mm; margin-right:auto}
-.brand-mark{
-  display:grid; place-items:center; flex:none;
-  width:11mm; height:11mm; padding-bottom:.6mm;
-  background:var(--accent); color:var(--paper);
-  font-family:var(--f-display); font-size:16pt; font-weight:600; line-height:1; border-radius:1mm;
-}
-.brand-name{font-family:var(--f-display); font-size:15pt; line-height:1.15}
-.brand-sub{
-  display:block; font-size:6.5pt; letter-spacing:.19em; text-transform:uppercase;
-  color:var(--ink-3); font-weight:500; margin-right:-.19em;
-  font-family:var(--f-sans);
-}
-.head-week{text-align:right; padding-top:1mm}
-.head-week .lbl{
-  display:block; font-size:6.5pt; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--ink-3); font-weight:600; margin-right:-.16em;
-}
-.head-week .val{
-  font-family:var(--f-display); font-size:12pt; color:var(--ink);
-  min-width:42mm; display:inline-block;
-}
+  header { text-align: center; margin-bottom: 3mm; }
+  .eyebrow {
+    font-size: 10pt; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--green); font-weight: 700;
+  }
+  h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 34pt; font-weight: 700; letter-spacing: .04em;
+    color: var(--red); line-height: 1.1; margin: 1mm 0 1.5mm;
+  }
+  .week {
+    display: inline-block; font-size: 13pt; font-weight: 600;
+    color: var(--ink); padding: .6mm 4mm;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .intro {
+    margin: 2mm auto 0; max-width: 185mm;
+    font-size: 11pt; line-height: 1.35; color: #444;
+  }
+  .intro b, .intro strong { color: var(--ink); font-weight: 600; }
 
-/* cím */
-.sheet-title{margin:9mm 0 0}
-.sheet-title .eyebrow{
-  margin:0 -.22em .5mm 0; font-size:7pt; letter-spacing:.22em;
-  text-transform:uppercase; font-weight:600; color:var(--accent);
-}
-.sheet-title h1{
-  margin:0; font-family:var(--f-display); font-weight:400;
-  font-size:31pt; line-height:1.05; letter-spacing:-.005em;
-}
-.rule{height:1.5px; background:var(--brass); margin:5mm 0 0}
+  .days { flex: 1; display: flex; flex-direction: column; gap: 2mm; min-height: 0; }
+  .day {
+    flex: 1; min-height: 0;
+    display: grid; grid-template-columns: 23mm minmax(0, 302fr) minmax(0, 352fr);
+    border: 1px solid var(--line); border-radius: 2mm;
+    background: #fff; overflow: hidden;
+  }
+  .date {
+    background: var(--green); color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2mm 1mm;
+  }
+  .date .d { font-family: "Playfair Display", Georgia, serif; font-size: 26pt; line-height: 1; font-weight: 700; }
+  .date .m { font-size: 8.5pt; letter-spacing: .14em; text-transform: uppercase; opacity: .85; margin-top: .8mm; }
+  .date .w { font-size: 9.5pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-top: 1.6mm;
+             border-top: 1px solid rgba(255,255,255,.4); padding-top: 1.2mm; }
+  .col { padding: 0 3mm; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .col + .col { border-left: 1px dashed var(--line); }
+  .col h3 {
+    font-size: 9.5pt; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--red); font-weight: 700; margin-bottom: 1.4mm;
+  }
+  /* mindkét oszlop ugyanannyi sor magas, így a fejlécek és a sorok egy vonalba esnek */
+  ol { list-style: none; counter-reset: n; font-size: 12pt; min-height: calc(var(--rows, 4) * (1.25em + 1.2mm)); }
+  li {
+    counter-increment: n; position: relative; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    padding-left: 1.5em; line-height: 1.25; margin: .6mm 0;
+  }
+  li::before {
+    content: counter(n); position: absolute; left: 0; top: .22em;
+    width: 1.55em; height: 1.55em; border-radius: 50%;
+    background: var(--tint); color: var(--green);
+    font-size: .7em; font-weight: 700; line-height: 1.55em; text-align: center;
+  }
+  li .s { color: #5a5a5a; font-size: .9em; }
+  li .s:not(:empty)::before { content: " · "; }
 
-/* napok — flex:1, hogy MINDIG kitöltsék a lap magasságát */
-.days{flex:1; display:flex; flex-direction:column}
-.day{
-  flex:1 1 0; display:flex; gap:7mm; align-items:center;
-  padding:3.5mm 0; border-bottom:1px solid var(--line);
-}
-.day:last-child{border-bottom:0}
-.day-name{
-  flex:0 0 34mm; font-family:var(--f-display); font-size:15pt;
-  line-height:1.1; color:var(--ink);
-}
-.day-name .dnum{
-  display:block; font-family:var(--f-sans); font-size:6.5pt; font-weight:600;
-  letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
-  margin:0 -.16em 1mm 0;
-}
-.courses{flex:1; display:flex; flex-direction:column; justify-content:center; gap:2.5mm}
-.course{display:flex; align-items:baseline; gap:5mm}
-.course-lbl{
-  flex:0 0 21mm; font-size:7pt; font-weight:600; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--ink-3); margin-right:-.12em;
-}
-.course-val{flex:1; font-size:13pt; line-height:1.35; color:var(--ink)}
+  /* sűrűbb lap: a szkript addig csökkenti a --fs betűméretet, amíg minden nap kifér */
+  ol { font-size: var(--fs, 12pt); }
+  .page.dense .days { gap: 1.4mm; }
+  .page.dense .date { padding: 1mm; }
+  .page.dense .date .d { font-size: calc(var(--fs, 12pt) * 1.9); }
+  .page.dense .date .w { margin-top: 1mm; padding-top: .8mm; }
+  .page.dense .col h3 { margin-bottom: .6mm; }
+  .page.dense li { margin: .3mm 0; }
 
-/* Sűrű változat: a rendelkezésre álló 215 mm-be 7 nap x 4 fogás csak
-   szűkített ritmussal fér bele — enélkül a lap 2. oldalra folyna. */
-.sheet[data-dense="1"] .day{padding:2mm 0}
-.sheet[data-dense="1"] .courses{gap:1.5mm}
-.sheet[data-dense="1"] .course-val{font-size:11.5pt; line-height:1.3}
-.sheet[data-dense="1"] .day-name{font-size:13pt; flex-basis:30mm}
-.sheet[data-dense="1"] .sheet-title h1{font-size:27pt}
+  footer { margin-top: 2.5mm; }
+  .info {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line); border-radius: 2mm; background: var(--tint);
+  }
+  .info > div { padding: 2mm 2.5mm; text-align: center; }
+  .info > div + div { border-left: 1px solid var(--line); }
+  .info .k { font-size: 8.5pt; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .info .v { font-size: 15pt; font-weight: 700; color: var(--ink); margin-top: .4mm; }
+  .info .v.big { color: var(--red); }
+  .order { margin-top: 2mm; text-align: center; font-size: 12.5pt; font-weight: 600; color: var(--red); }
+  .small { margin-top: 1mm; text-align: center; font-size: 9.5pt; color: #555; }
+  .page.no-info footer { display: none; }
 
-/* szerkeszthető mezők */
-[contenteditable]{outline:none; border-radius:2px}
-.is-empty::before{
-  content:attr(data-ph); color:#B9AE9C; font-style:italic;
-}
-.is-empty{border-bottom:1px dashed var(--line-strong); min-height:1em}
+  /* ---------- szerkesztés ---------- */
+  [contenteditable] { outline: none; border-radius: 1mm; }
+  [contenteditable]:hover { background: rgba(47,107,58,.06); }
+  [contenteditable]:focus { background: rgba(47,107,58,.10); box-shadow: 0 0 0 1px rgba(47,107,58,.35); }
+  .date [contenteditable]:hover, .date [contenteditable]:focus { background: rgba(255,255,255,.14); box-shadow: none; }
+  [contenteditable].empty::after { content: attr(data-ph); color: var(--ph); font-weight: 400; }
+  li .n, li .s { display: inline; }
+  /* az üres köretmező csak rámutatáskor látszik, de mindig kattintható */
+  li .s.empty { display: inline-block; min-width: 14mm; vertical-align: top; }
+  li .s.empty::after { content: none; }
+  li:hover .s.empty::after, li .s.empty:focus::after { content: " · köret"; color: var(--ph); }
 
-/* lábléc */
-.sheet-foot{
-  margin-top:6mm; padding-top:3mm; border-top:1px solid var(--line);
-  display:flex; flex-wrap:wrap; gap:1mm 6mm; justify-content:space-between;
-  font-size:7.5pt; color:var(--ink-3);
-}
-.sheet-foot p{margin:0}
-
-/* MINTA bélyeg */
-.stamp{
-  position:absolute; top:52mm; right:14mm;
-  transform:rotate(-9deg); pointer-events:none;
-  font-family:var(--f-sans); font-size:15pt; font-weight:600;
-  letter-spacing:.3em; text-transform:uppercase;
-  color:rgba(158,43,30,.5); border:2px solid rgba(158,43,30,.45);
-  padding:2mm 5mm; border-radius:1.5mm;
-}
-body:not(.is-sample) .stamp{display:none}
-
-/* ---------- nyomtatás ---------- */
-@page{size:A4 portrait; margin:0}
-@media print{
-  body{background:#fff}
-  .sheet-wrap{padding:0}
-  .toolbar{display:none}
-  .sheet{width:auto; min-height:auto; box-shadow:none; margin:0}
-  /* nyomtatásban az üres sor tényleg üres — nincs kitalált tartalom */
-  .is-empty::before{content:""}
-  .is-empty{border-bottom-color:var(--line)}
-  .day{break-inside:avoid}
-}
-@media (max-width:820px){
-  .sheet{width:100%; min-height:0; padding:8mm}
-  .day{flex-direction:column; align-items:stretch; gap:2mm}
-  .day-name{flex:none}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{transition-duration:.01ms !important; animation-duration:.01ms !important}
-}
+  @media screen {
+    .page { margin: 10mm auto; box-shadow: 0 4px 24px rgba(0,0,0,.15); }
+    .page-wrap { overflow-x: auto; padding: 0 8px; }
+  }
+  @media print {
+    html, body { background: none; }
+    .toolbar { display: none; }
+    [contenteditable].empty::after { content: none; }
+    li.blank { visibility: hidden; }
+    .intro.empty, .order.empty, .small.empty { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -204,12 +193,16 @@ body:not(.is-sample) .stamp{display:none}
     <label for="fType">Menü típusa</label>
     <select id="fType">
       <option>Napi menü</option>
-      <option>Bölcsőde</option>
-      <option>Óvoda</option>
-      <option>Iskola — alsó tagozat</option>
-      <option>Iskola — felső tagozat</option>
-      <option>Középiskola</option>
+      <option>Bölcsőde menü</option>
+      <option>Óvoda menü</option>
+      <option>Iskola alsó tagozat menü</option>
+      <option>Iskola felső tagozat menü</option>
+      <option>Középiskola menü</option>
     </select>
+  </div>
+  <div class="tb-field">
+    <label for="fStart">A hét első napja</label>
+    <input type="date" id="fStart">
   </div>
   <div class="tb-field">
     <label for="fDays">Napok</label>
@@ -220,225 +213,251 @@ body:not(.is-sample) .stamp{display:none}
     </select>
   </div>
   <div class="tb-field">
-    <label for="fCourses">Fogások / nap</label>
-    <select id="fCourses">
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-    </select>
+    <label for="fSoups">Levesek / nap</label>
+    <select id="fSoups"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select>
   </div>
+  <div class="tb-field">
+    <label for="fMains">Főételek / nap</label>
+    <select id="fMains"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select>
+  </div>
+  <label class="tb-check"><input type="checkbox" id="fInfo" checked> Ár- és rendelési sáv</label>
   <div class="tb-actions">
-    <button type="button" class="tb-btn" id="bSample">Minta megtekintése</button>
-    <button type="button" class="tb-btn" id="bClear">Tartalom törlése</button>
-    <button type="button" class="tb-btn tb-btn-primary" id="bPrint">Nyomtatás / PDF</button>
+    <button type="button" class="tb-btn" id="bSample">Minta: október 5–9.</button>
+    <button type="button" class="tb-btn" id="bClear">Ételek törlése</button>
+    <button type="button" class="tb-btn primary" id="bPrint">Nyomtatás / PDF</button>
   </div>
   <p class="tb-note">
-    Kattints bármelyik sorra és írd be a hét ételeit — a lap magától menti a böngészőben, menütípusonként külön.
-    <b>Az üres sorok nyomtatásban is üresen maradnak</b>, mert a heti menük tartalma nem szerepel az adatforrásban.
-    Nyomtatáskor A4 méret, margó nélkül, „háttérgrafika” bekapcsolva.
+    Kattintson bármelyik szövegre a lapon, és írja át — az ételnév után a köret külön mezőbe kerül (nem kötelező).
+    A lap magától menti a böngészőben, menütípusonként külön. Az üresen hagyott sorok nyomtatásban nem látszanak.
+    Nyomtatáskor: A4, margó nélkül, „háttérgrafika” bekapcsolva.
   </p>
 </div>
 
-<div class="sheet-wrap">
-  <article class="sheet" id="sheet">
-    <span class="stamp" aria-hidden="true">Minta</span>
-
-    <header class="sheet-head">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true">N</span>
-        <span class="brand-name">Nemzeti
-          <span class="brand-sub">Étterem és Sütöde</span>
-        </span>
-      </div>
-      <div class="head-week">
-        <span class="lbl">A hét</span>
-        <span class="val" contenteditable="true" id="fWeek" data-ph="dátum" role="textbox" aria-label="A hét dátuma"></span>
-      </div>
+<div class="page-wrap">
+  <article class="page" id="page">
+    <header>
+      <div class="eyebrow" id="oType">Napi menü</div>
+      <h1>NEMZETI ÉTTEREM</h1>
+      <div class="week" id="oWeek"></div>
+      <p class="intro" id="oIntro" contenteditable="true" data-ph="Bevezető szöveg (nem kötelező)"></p>
     </header>
 
-    <div class="sheet-title">
-      <p class="eyebrow">Heti étrend</p>
-      <h1 id="oType">Napi menü</h1>
-    </div>
-    <div class="rule"></div>
+    <main class="days" id="days"></main>
 
-    <div class="days" id="days"></div>
-
-    <footer class="sheet-foot">
-      <p>Nemzeti Étterem és Sütöde · 5350 Tiszafüred, Fő út 8.</p>
-      <p>59/352-349 · 59/511-212 · nemzet1@t-online.hu</p>
+    <footer>
+      <div class="info" id="info">
+        <div><div class="k" contenteditable="true" data-ph="címke"></div><div class="v big" contenteditable="true" data-ph="érték"></div></div>
+        <div><div class="k" contenteditable="true" data-ph="címke"></div><div class="v" contenteditable="true" data-ph="érték"></div></div>
+        <div><div class="k" contenteditable="true" data-ph="címke"></div><div class="v" contenteditable="true" data-ph="érték"></div></div>
+        <div><div class="k" contenteditable="true" data-ph="címke"></div><div class="v" contenteditable="true" data-ph="érték"></div></div>
+      </div>
+      <p class="order" id="oOrder" contenteditable="true" data-ph="Rendelési tudnivaló (nem kötelező)"></p>
+      <p class="small" id="oSmall" contenteditable="true" data-ph="Apró betűs megjegyzés (nem kötelező)"></p>
     </footer>
   </article>
 </div>
 
 <script>
-(function(){
+(function () {
   'use strict';
-  var NAPOK = ['Hétfő','Kedd','Szerda','Csütörtök','Péntek','Szombat','Vasárnap'];
-  /* Általános fogásnevek, szabadon átírhatók — nem az étterem közlése. */
-  var LBL = ['Leves','Főétel','',''];
+  var NAPOK = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'];
+  var HONAP = ['január', 'február', 'március', 'április', 'május', 'június', 'július',
+               'augusztus', 'szeptember', 'október', 'november', 'december'];
 
-  /* MINTA: kizárólag az ADATOK.md 4. pontjában szereplő, valós à la carte
-     tételek. Csak szemléltetés, ezért a lapra „Minta” bélyeg kerül. */
-  var SAMPLE = [
-    ['Csontleves','Sertéspörkölt'],
-    ['Alföldi gulyásleves','Rántott csirkemell'],
-    ['Gyümölcsleves','Brassói aprópecsenye'],
-    ['Orjaleves','Bakonyi sertésborda'],
-    ['Napi leves','Rántott sajt'],
-    ['',''],
-    ['','']
-  ];
+  /* Az ár- és rendelési sáv alapértéke: a megbízó által adott 2026. októberi napi menüről. */
+  var INFO_NAPI = {
+    info: [['Napi menü', '2 400 Ft / adag'], ['Kiszállítás', '100 Ft / adag'], ['Elviteles doboz', '100 Ft / db'], ['Telefon', '59/352-349']],
+    order: 'Kérjük, napi ebédrendelését 09:00-ig jelezze! · Kiszállítás: 11:00 – 13:00 között',
+    small: 'Tájékoztatjuk előfizetőinket, hogy 2026. augusztus 31-től a menü ára 2 400 Ft/adag. · A változtatás jogát fenntartjuk!',
+    intro: 'Kedves Vendégeink a levesekhez szabadon választhatnak a főételek közül. Ha nem találnak kedvükre valót, minden nap kérhető: <b>Sertéspörkölt galuskával</b> vagy <b>Rántott szelet vegyes körettel</b>.'
+  };
 
-  var $ = function(id){ return document.getElementById(id); };
-  var fType=$('fType'), fDays=$('fDays'), fCourses=$('fCourses'),
-      fWeek=$('fWeek'), oType=$('oType'), days=$('days');
+  /* MINTA: a megbízó által adott, 2026. október 5–9-i valós napi menü. [név, köret] */
+  var MINTA = {
+    start: '2026-10-05', days: 5, ns: 3, nm: 4,
+    rows: [
+      { s: [['Zöldborsóleves'], ['Csontleves'], ['Alföldi gulyásleves']],
+        m: [['Sajtbundás csirkemell', 'zelleres burgonyapüré'], ['Rizses hús'], ['Paradicsomos káposzta', 'sült tarja'], ['Nudli']] },
+      { s: [['Magyaros karalábéleves'], ['Vegyes gyümölcsleves'], ['Bojtárleves']],
+        m: [['Rántott csirkecomb', 'petrezselymes burgonya'], ['Sertésszelet Budapest módra', 'párolt rizs'], ['Carbonara spagetti'], ['Meggyes-mákos és túrós rétes']] },
+      { s: [['Kiskocka tésztaleves'], ['Cseh gombaleves'], ['Frankfurti leves']],
+        m: [['Szecsuáni csirke', 'zöldséges rizs'], ['Pirított sertésmáj', 'sós burgonya'], ['Gyümölcsmártás, főtt hús', 'pirított dara'], ['Sajtos-tejfölös metélt']] },
+      { s: [['Csontleves'], ['Mézes körteleves'], ['Jókai bableves']],
+        m: [['Sajtos-baconos rakott csirkemell', 'görögsaláta'], ['BBQ oldalas', 'fűszeres burgonya, csalamádé'], ['Hortobágyi tokány', 'rizs'], ['Szilvás gombóc']] },
+      { s: [['Sütőtök krémleves', 'pirított mandulával'], ['Fahéjas almaleves'], ['Orjaleves']],
+        m: [['Paprikás sertésszelet', 'tészta köret'], ['Rántott hal', 'franciasaláta, rizs'], ['Rakott kelkáposzta'], ['Máglyarakás']] }
+    ]
+  };
 
-  function key(){ return 'nemzeti-menu:' + fType.value; }
+  var $ = function (id) { return document.getElementById(id); };
+  var page = $('page'), daysEl = $('days'), fType = $('fType'), fStart = $('fStart'), fDays = $('fDays'),
+      fSoups = $('fSoups'), fMains = $('fMains'), fInfo = $('fInfo'),
+      oType = $('oType'), oWeek = $('oWeek'), oIntro = $('oIntro'), oOrder = $('oOrder'), oSmall = $('oSmall');
+  var infoCells = [].slice.call($('info').children);
 
-  function markEmpty(el){
-    var empty = el.textContent.trim() === '';
-    el.classList.toggle('is-empty', empty);
-    if (empty && el.innerHTML !== '') el.innerHTML = '';
+  var isNapi = function () { return fType.selectedIndex === 0; };
+  var key = function () { return 'nemzeti-heti-menu:' + fType.value; };
+
+  function iso(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function parse(s) { var p = (s || '').split('-'); return p.length === 3 ? new Date(+p[0], p[1] - 1, +p[2]) : null; }
+  function nextMonday() {
+    var d = new Date(); d.setHours(0, 0, 0, 0);
+    var wd = (d.getDay() + 6) % 7;            // 0 = hétfő
+    d.setDate(d.getDate() + (wd < 5 ? -wd : 7 - wd)); // hétköznap: e hét hétfője, hétvégén: a jövő heti
+    return iso(d);
+  }
+  function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  var cap = function (s) { return s.charAt(0).toUpperCase() + s.slice(1); };
+
+  function weekLabel(start, n) {
+    if (!start) return '';
+    var end = addDays(start, n - 1);
+    return start.getMonth() === end.getMonth()
+      ? cap(HONAP[start.getMonth()]) + ' ' + start.getDate() + ' – ' + end.getDate() + '.'
+      : cap(HONAP[start.getMonth()]) + ' ' + start.getDate() + '. – ' + cap(HONAP[end.getMonth()]) + ' ' + end.getDate() + '.';
   }
 
-  /* Naponként mentünk címkét ÉS ételt: van menü, ahol a fogások eltérnek
-     (pl. óvodánál tízórai/ebéd/uzsonna), és a szerkesztés nem veszhet el. */
-  function collect(){
-    var d = { week: fWeek.textContent.trim(), days: fDays.value,
-              courses: fCourses.value, rows: [] };
-    days.querySelectorAll('.day').forEach(function(day){
-      var row = [];
-      day.querySelectorAll('.course').forEach(function(c){
-        row.push({
-          l: c.querySelector('.course-lbl').textContent.trim(),
-          v: c.querySelector('.course-val').textContent.trim()
-        });
-      });
-      d.rows.push(row);
-    });
+  /* ---------- szerkeszthető mezők ---------- */
+  function markEmpty(el) {
+    var empty = el.textContent.trim() === '';
+    if (empty && el.innerHTML !== '') el.innerHTML = '';
+    el.classList.toggle('empty', empty);
+    var li = el.closest && el.closest('li');
+    if (li) li.classList.toggle('blank', li.querySelector('.n').textContent.trim() === '' && li.querySelector('.s').textContent.trim() === '');
+  }
+  function editable(cls, ph, text) {
+    var s = document.createElement('span');
+    s.className = cls; s.contentEditable = 'true'; s.setAttribute('data-ph', ph);
+    s.setAttribute('role', 'textbox'); s.setAttribute('aria-label', ph);
+    s.textContent = text || '';
+    return s;
+  }
+  function item(pair, ph) {
+    var li = document.createElement('li');
+    li.appendChild(editable('n', ph, pair && pair[0]));
+    li.appendChild(editable('s', 'köret', pair && pair[1]));
+    return li;
+  }
+  function col(title, list, count, ph) {
+    var c = document.createElement('div'); c.className = 'col';
+    var h = document.createElement('h3'); h.contentEditable = 'true'; h.setAttribute('data-ph', 'cím'); h.textContent = title;
+    var ol = document.createElement('ol');
+    for (var i = 0; i < count; i++) ol.appendChild(item(list && list[i], ph));
+    c.appendChild(h); c.appendChild(ol);
+    return c;
+  }
+
+  /* ---------- állapot ---------- */
+  function defaults() {
+    var napi = isNapi();
+    return {
+      start: nextMonday(), days: 5, ns: 3, nm: 4, info: napi,
+      intro: napi ? INFO_NAPI.intro : '',
+      titles: ['Levesek', 'Főételek'],
+      rows: [],
+      infoCells: napi ? INFO_NAPI.info : [['', ''], ['', ''], ['', ''], ['Telefon', '59/352-349']],
+      order: napi ? INFO_NAPI.order : '',
+      small: napi ? INFO_NAPI.small : ''
+    };
+  }
+
+  function collect() {
+    var firstCols = daysEl.querySelector('.day');
+    var d = {
+      start: fStart.value, days: +fDays.value, ns: +fSoups.value, nm: +fMains.value, info: fInfo.checked,
+      intro: oIntro.innerHTML.trim(), order: oOrder.textContent.trim(), small: oSmall.textContent.trim(),
+      titles: firstCols ? [].map.call(firstCols.querySelectorAll('h3'), function (h) { return h.textContent.trim(); }) : ['Levesek', 'Főételek'],
+      infoCells: infoCells.map(function (c) { return [c.children[0].textContent.trim(), c.children[1].textContent.trim()]; }),
+      rows: [].map.call(daysEl.querySelectorAll('.day'), function (day) {
+        var ols = day.querySelectorAll('ol');
+        var pick = function (ol) { return [].map.call(ol.children, function (li) { return [li.querySelector('.n').textContent.trim(), li.querySelector('.s').textContent.trim()]; }); };
+        return { s: pick(ols[0]), m: pick(ols[1]) };
+      })
+    };
     return d;
   }
+  function save() { try { localStorage.setItem(key(), JSON.stringify(collect())); } catch (e) {} }
+  function load() { try { return JSON.parse(localStorage.getItem(key()) || 'null'); } catch (e) { return null; } }
 
-  function save(){
-    try { localStorage.setItem(key(), JSON.stringify(collect())); } catch (e) {}
-  }
-  function load(){
-    try { return JSON.parse(localStorage.getItem(key()) || 'null'); } catch (e) { return null; }
-  }
-
-  function build(data, sample){
-    var nDays = +fDays.value, nCourses = +fCourses.value;
-    days.innerHTML = '';
-    for (var i = 0; i < nDays; i++) {
-      var day = document.createElement('div');
-      day.className = 'day';
-
-      var name = document.createElement('div');
-      name.className = 'day-name';
-      var num = document.createElement('span');
-      num.className = 'dnum';
-      num.textContent = (i + 1) + '. nap';
-      name.appendChild(num);
-      name.appendChild(document.createTextNode(NAPOK[i]));
-      day.appendChild(name);
-
-      var courses = document.createElement('div');
-      courses.className = 'courses';
-      for (var c = 0; c < nCourses; c++) {
-        var row = document.createElement('div');
-        row.className = 'course';
-
-        var lbl = document.createElement('div');
-        lbl.className = 'course-lbl';
-        lbl.contentEditable = 'true';
-        lbl.setAttribute('data-ph', 'fogás');
-        lbl.setAttribute('role', 'textbox');
-        lbl.setAttribute('aria-label', (c + 1) + '. fogás megnevezése');
-        var saved = (data && data.rows && data.rows[i]) ? data.rows[i][c] : null;
-        lbl.textContent = (saved && saved.l != null) ? saved.l : (LBL[c] || '');
-
-        var val = document.createElement('div');
-        val.className = 'course-val';
-        val.contentEditable = 'true';
-        val.setAttribute('data-ph', 'ide írd az ételt');
-        val.setAttribute('role', 'textbox');
-        val.setAttribute('aria-label', NAPOK[i] + ' — ' + (c + 1) + '. fogás');
-        var txt = '';
-        if (sample) txt = (SAMPLE[i] && SAMPLE[i][c]) || '';
-        else if (saved) txt = saved.v || '';
-        val.textContent = txt;
-
-        row.appendChild(lbl); row.appendChild(val);
-        courses.appendChild(row);
-      }
-      day.appendChild(courses);
-      days.appendChild(day);
-    }
-    document.getElementById('sheet')
-            .setAttribute('data-dense', (nDays * nCourses > 20) ? '1' : '0');
-    days.querySelectorAll('[contenteditable]').forEach(markEmpty);
-    markEmpty(fWeek);
-  }
-
-  function render(sample){
-    var d = sample ? null : load();
-    if (d && !sample) {
-      if (d.days) fDays.value = d.days;
-      if (d.courses) fCourses.value = d.courses;
-      fWeek.textContent = d.week || '';
-    }
+  function render(d) {
+    fStart.value = d.start || nextMonday(); fDays.value = d.days; fSoups.value = d.ns; fMains.value = d.nm; fInfo.checked = !!d.info;
     oType.textContent = fType.value;
-    document.title = fType.value + ' — Nemzeti Étterem és Sütöde';
-    build(d, sample);
-    document.body.classList.toggle('is-sample', !!sample);
+    var start = parse(fStart.value), n = +fDays.value;
+    oWeek.textContent = weekLabel(start, n);
+    oIntro.innerHTML = d.intro || ''; oOrder.textContent = d.order || ''; oSmall.textContent = d.small || '';
+    (d.infoCells || []).forEach(function (p, i) { if (infoCells[i]) { infoCells[i].children[0].textContent = p[0]; infoCells[i].children[1].textContent = p[1]; } });
+    page.classList.toggle('no-info', !d.info);
+
+    var rowsMax = Math.max(+fSoups.value, +fMains.value);
+    page.style.setProperty('--rows', rowsMax);
+
+    daysEl.innerHTML = '';
+    for (var i = 0; i < n; i++) {
+      var day = document.createElement('section'); day.className = 'day';
+      var dt = start ? addDays(start, i) : null;
+      var date = document.createElement('div'); date.className = 'date';
+      date.innerHTML = '<div class="d">' + (dt ? ('0' + dt.getDate()).slice(-2) : '') + '</div><div class="m">' +
+        (dt ? HONAP[dt.getMonth()] : '') + '</div><div class="w">' + NAPOK[i] + '</div>';
+      var r = (d.rows || [])[i] || {};
+      day.appendChild(date);
+      day.appendChild(col((d.titles || [])[0] || 'Levesek', r.s, +fSoups.value, 'leves'));
+      day.appendChild(col((d.titles || [])[1] || 'Főételek', r.m, +fMains.value, 'főétel'));
+      daysEl.appendChild(day);
+    }
+    page.querySelectorAll('[contenteditable]').forEach(markEmpty);
+    fit();
   }
 
-  /* beírás: üres állapot jelzése + mentés (a mintanézetet nem mentjük) */
-  document.addEventListener('input', function(e){
-    var el = e.target.closest('[contenteditable]');
-    if (!el) return;
-    markEmpty(el);
-    if (!document.body.classList.contains('is-sample')) save();
+  /* 12 pt-ról indul, és fél pontonként csökken, amíg egyik nap sem lóg túl (alsó határ 7 pt) */
+  function fit() {
+    page.classList.remove('dense'); page.style.removeProperty('--fs');
+    var over = function () { return [].some.call(daysEl.children, function (d) { return d.scrollHeight > d.clientHeight + 1; }); };
+    if (!over()) return;
+    page.classList.add('dense');
+    for (var fs = 11.5; fs >= 7; fs -= 0.5) { page.style.setProperty('--fs', fs + 'pt'); if (!over()) return; }
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+  /* ---------- események ---------- */
+  page.addEventListener('input', function (e) {
+    var t = e.target.closest('[contenteditable]');
+    if (t) markEmpty(t);
+    // a cím a többi napon is egyezzen
+    if (t && t.tagName === 'H3') {
+      var idx = [].indexOf.call(t.closest('.day').querySelectorAll('h3'), t);
+      daysEl.querySelectorAll('.day').forEach(function (day) { var h = day.querySelectorAll('h3')[idx]; if (h !== t) h.textContent = t.textContent; });
+    }
+    save();
   });
-  /* csak sima szöveget engedünk be, hogy a tipográfia egységes maradjon */
-  document.addEventListener('paste', function(e){
+  // Enter: a következő mezőre lép, nem tör sort
+  page.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || !e.target.isContentEditable || e.target === oIntro) return;
+    e.preventDefault();
+    var all = [].slice.call(page.querySelectorAll('[contenteditable]'));
+    var nx = all[all.indexOf(e.target) + 1]; if (nx) nx.focus();
+  });
+  // beillesztés csak sima szövegként
+  page.addEventListener('paste', function (e) {
     if (!e.target.closest('[contenteditable]')) return;
     e.preventDefault();
-    var t = ((e.clipboardData || window.clipboardData).getData('text') || '').replace(/\s+/g, ' ');
-    document.execCommand('insertText', false, t);
-  });
-  /* Enter ne törjön sort a mezőkben */
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Enter' && e.target.closest('[contenteditable]')) {
-      e.preventDefault();
-      e.target.blur();
-    }
+    var txt = (e.clipboardData || window.clipboardData).getData('text').replace(/\s+/g, ' ');
+    document.execCommand('insertText', false, txt);
   });
 
-  fType.addEventListener('change', function(){
-    $('bSample').textContent = 'Minta megtekintése';
-    render(false);
-  });
-  fDays.addEventListener('change', function(){ build(collect(), false); save(); });
-  fCourses.addEventListener('change', function(){ build(collect(), false); save(); });
+  function rerender() { var d = collect(); render(d); save(); }
+  fType.addEventListener('change', function () { render(load() || defaults()); });
+  [fStart, fDays, fSoups, fMains, fInfo].forEach(function (el) { el.addEventListener('change', rerender); });
 
-  $('bSample').addEventListener('click', function(){
-    var on = !document.body.classList.contains('is-sample');
-    if (on) { fDays.value = '5'; fCourses.value = '2'; }
-    this.textContent = on ? 'Vissza a szerkesztéshez' : 'Minta megtekintése';
-    render(on);
+  $('bSample').addEventListener('click', function () {
+    var d = collect();
+    d.start = MINTA.start; d.days = MINTA.days; d.ns = MINTA.ns; d.nm = MINTA.nm; d.rows = MINTA.rows;
+    if (isNapi()) { d.info = true; d.intro = INFO_NAPI.intro; d.infoCells = INFO_NAPI.info; d.order = INFO_NAPI.order; d.small = INFO_NAPI.small; }
+    render(d); save();
   });
-  $('bClear').addEventListener('click', function(){
-    if (!confirm('Biztosan törlöd a(z) „' + fType.value + '” tartalmát?')) return;
-    try { localStorage.removeItem(key()); } catch (e) {}
-    fWeek.textContent = '';
-    $('bSample').textContent = 'Minta megtekintése';
-    render(false);
-  });
-  $('bPrint').addEventListener('click', function(){ window.print(); });
+  $('bClear').addEventListener('click', function () { var d = collect(); d.rows = []; render(d); save(); });
+  $('bPrint').addEventListener('click', function () { window.print(); });
 
-  render(false);
+  render(load() || defaults());
 })();
 </script>
 </body>
